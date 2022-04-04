@@ -1,54 +1,46 @@
-import java.util.Scanner;
-import java.io.File;
-import java.io.IOException;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.*;
-import java.awt.*;
-class Main {
-  public static void main(String[] args)throws IOException {
-    
-    JFrame frame = new JFrame("Image Viewer");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+import javax.swing.JPanel;
+//import javax.swing.SwingUtilities;
 
-    //Scanner sc = new Scanner(System.in);
-    //String url = sc.nextLine();
-    //System.out.println(url);
-    int width;
-    int height;
-    BufferedImage image =null;
-    File f=null;
+public class Main extends JPanel{
+  BufferedImage img;
+  static int width;
+  static int height;
+  
+  public Main(){
+    setSize(width,height);
+    setVisible(true);
+    loadImage("photo-1533450718592-29d45635f0a9.jpg");
+  }
+
+  public void loadImage(String URL){
     try{
-      f = new File("D:\\images\\photo-1533450718592-29d45635f0a9.jpg");
-      image = ImageIO.read(f);
-      width = image.getWidth();
-      height = image.getHeight();
-      image = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
+      img = ImageIO.read(Main.class.getResource(URL));
+      width = img.getWidth();
+      height = img.getHeight();
       System.out.println("Read complete.");
     }
     catch(IOException e){
-      System.out.println("Error:"+e);
+      e.printStackTrace();
     }
-    
-    ImageIcon imgIcon = new ImageIcon(image);
-    JLabel lbl = new JLabel();
-    lbl.setIcon(imgIcon);
-    frame.add(lbl, BorderLayout.CENTER);
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
-    System.out.println("done");
-    
-    /*
-    try{
-      f = new File("C:\\Users\\Rohan\\Downloads\\Output.jpg");
-      ImageIO.write(image, "jpg",f);
-      System.out.println("writing complete");
-    }
-    catch(IOException e){
-      System.out.println("Error: "+e);
-    }
-    */
+  }
+
+  protected void paintComponent(Graphics g){
+    super.paintComponent(g);
+    g.drawImage(img,0,0,width,height,this);
+    System.out.println("Print complete.");
+  }
+
+  public static void main(String[] args){
+    JFrame frm = new JFrame();
+    frm.setSize(700,500);
+    frm.setVisible(true);
+    frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frm.add(new Main());
   }
 }
