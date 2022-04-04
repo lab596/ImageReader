@@ -6,16 +6,18 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 //import javax.swing.SwingUtilities;
+import java.util.Scanner;
 
 public class Main extends JPanel{
   BufferedImage img;
   static int width;
   static int height;
-  
+  Scanner sc = new Scanner(System.in);
+  String url = sc.nextLine();
   public Main(){
-    setSize(width,height);
+    //setSize(5,5);
     setVisible(true);
-    loadImage("photo-1533450718592-29d45635f0a9.jpg");
+    loadImage(url);
   }
 
   public void loadImage(String URL){
@@ -37,10 +39,13 @@ public class Main extends JPanel{
   }
 
   public static void main(String[] args){
+    System.out.println("Image URL: ");
     JFrame frm = new JFrame();
-    frm.setSize(700,500);
     frm.setVisible(true);
     frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frm.add(new Main());
+    frm.setSize(width,height);
+    //System.out.println(width);
+    //System.out.println(height);
   }
 }
