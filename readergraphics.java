@@ -13,11 +13,11 @@ public class Main extends JPanel{
   static int width;
   static int height;
   Scanner sc = new Scanner(System.in);
-  String url = sc.nextLine();
+  // String url = sc.nextLine();
   public Main(){
     //setSize(5,5);
     setVisible(true);
-    loadImage(url);
+    loadImage("heart.jpg");
   }
 
   public void loadImage(String URL){
@@ -42,9 +42,11 @@ public class Main extends JPanel{
     super.paintComponent(g);
     g.drawImage(img,0,0,width,height,this);
     System.out.println("Print complete.");
+    draw(g);
+    printMen();
   }
 
-  static final int PIXEL_SIZE = 20;
+  static final int PIXEL_SIZE = 10;
   static int SCREEN_WIDTH = width;
   static int SCREEN_HEIGHT = height;
   static int ALL_PIXELS = (SCREEN_WIDTH*SCREEN_HEIGHT)/PIXEL_SIZE;
@@ -57,7 +59,52 @@ public class Main extends JPanel{
       g.drawLine(0,i*PIXEL_SIZE, SCREEN_WIDTH, i*PIXEL_SIZE);
     }
   }
-  
+
+  int[] getActualRGB(int color){
+    return new int[]{
+      (color & 0xff0000) >> 16,
+      (color & 0xff00) >> 8,
+      color & 0xff
+    };
+  }
+
+  public void printMen(){
+    //EXTERNAL
+    int SQUARELENGTH = 10;
+    for (int row = 0; row < SCREEN_HEIGHT -1; row += SQUARELENGTH){
+      // EVERY COLUMN
+      for (int col = 0; col < SCREEN_WIDTH-1; col+=SQUARELENGTH){
+        long average = 0;
+        int denominator = 0;
+
+        // INTERNAL
+        for (int row1 = 0; row1 < SQUARELENGTH; row1++){
+          for (int col1 = 0; col1 < SQUARELENGTH; col1++){
+
+
+            
+            try{
+              if (!(row+row1>=SCREEN_HEIGHT) && !(col+col1>=SCREEN_WIDTH)){
+              average+= img.getRGB( col+col1, row+row1);
+              denominator+=1;
+                }
+            } catch (Exception e){
+              System.out.println("ERROR:\n"+SCREEN_HEIGHT+"\n"+SCREEN_WIDTH+"\n"+(row+row1)+"\n" + (col+col1) + "\n=======");
+              // System.out.println("Pranav likes men");
+            }
+          }
+        }
+        average /= denominator;
+        int[] rgb = getActualRGB((int)average);
+        if (rgb[0] >= 150 || rgb[1] >= 150|| rgb[2] >= 1) System.out.print("⬜");
+        else {System.out.print(" ");}
+        // System.out.println("Average NOW: " + average);
+      }
+      System.out.println();
+      
+    }
+  }
+
   public static void main(String[] args){
     System.out.println("Image URL: ");
     JFrame frm = new JFrame();
