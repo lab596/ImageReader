@@ -13,11 +13,11 @@ public class Main extends JPanel{
   static int width;
   static int height;
   Scanner sc = new Scanner(System.in);
-  // String url = sc.nextLine();
+  String url = sc.nextLine();
   public Main(){
     //setSize(5,5);
     setVisible(true);
-    loadImage("heart.jpg");
+    loadImage(url);
   }
 
   public void loadImage(String URL){
@@ -46,7 +46,7 @@ public class Main extends JPanel{
     printMen();
   }
 
-  static final int PIXEL_SIZE = 10;
+  static final int PIXEL_SIZE = 5;
   static int SCREEN_WIDTH = width;
   static int SCREEN_HEIGHT = height;
   static int ALL_PIXELS = (SCREEN_WIDTH*SCREEN_HEIGHT)/PIXEL_SIZE;
@@ -70,7 +70,7 @@ public class Main extends JPanel{
 
   public void printMen(){
     //EXTERNAL
-    int SQUARELENGTH = 10;
+    int SQUARELENGTH = 5;
     for (int row = 0; row < SCREEN_HEIGHT -1; row += SQUARELENGTH){
       // EVERY COLUMN
       for (int col = 0; col < SCREEN_WIDTH-1; col+=SQUARELENGTH){
@@ -96,8 +96,8 @@ public class Main extends JPanel{
         }
         average /= denominator;
         int[] rgb = getActualRGB((int)average);
-        if (rgb[0] >= 150 || rgb[1] >= 150|| rgb[2] >= 1) System.out.print("⬜");
-        else {System.out.print(" ");}
+        if (rgb[0] >= 125 && rgb[1] >= 125 && rgb[2] >= 1) System.out.print(" ");
+        else {System.out.print("◼");}
         // System.out.println("Average NOW: " + average);
       }
       System.out.println();
