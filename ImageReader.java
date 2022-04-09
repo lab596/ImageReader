@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -40,25 +41,33 @@ public class Main extends JPanel{
   
   protected void paintComponent(Graphics g){
     super.paintComponent(g);
-    g.drawImage(img,0,0,width,height,this);
+    //g.drawImage(img,0,0,width,height,this);
+    //System.out.println("Print complete.");
+    //draw(g,rgb,x,y);
+    printImage(g);
+    //draw(g,rgb,x,y);
     System.out.println("Print complete.");
-    draw(g);
-    printMen();
   }
 
-  static final int PIXEL_SIZE = 5;
+  static final int PIXEL_SIZE = 1;
   static int SCREEN_WIDTH = width;
   static int SCREEN_HEIGHT = height;
   static int ALL_PIXELS = (SCREEN_WIDTH*SCREEN_HEIGHT)/PIXEL_SIZE;
 
-   public void draw(Graphics g){
+  /*
+   public void draw(Graphics g, int[] rgb1, int x1, int y1){
         //if the game is on draw these lines that make up the grid
     //super.draw(g);
-    for(int i =0; i<SCREEN_HEIGHT/PIXEL_SIZE;i++){
-      g.drawLine(i*PIXEL_SIZE, 0, i*PIXEL_SIZE, SCREEN_HEIGHT);
-      g.drawLine(0,i*PIXEL_SIZE, SCREEN_WIDTH, i*PIXEL_SIZE);
-    }
+    
+      g.setColor(Color.RED);
+      g.fillRect(x,y,10,10);
+      System.out.println("YEEHAW");
+      //g.drawLine(i*PIXEL_SIZE, 0, i*PIXEL_SIZE, SCREEN_HEIGHT);
+      //g.drawLine(0,i*PIXEL_SIZE, SCREEN_WIDTH, i*PIXEL_SIZE);
+    
+
   }
+  */
 
   int[] getActualRGB(int color){
     return new int[]{
@@ -67,10 +76,19 @@ public class Main extends JPanel{
       color & 0xff
     };
   }
+  /*
+  public void draw1(Graphics g,int[] rgb,int row, int column){
+    g.setColor(Color.red);
+    int x = column;
+    int y= row;
+    g.fillRect(x,y,1,1);
+  }
+  */
+  int[] rgb = new int[3];
 
-  public void printMen(){
+  public void printImage(Graphics g){
     //EXTERNAL
-    int SQUARELENGTH = 5;
+    int SQUARELENGTH = 1;
     for (int row = 0; row < SCREEN_HEIGHT -1; row += SQUARELENGTH){
       // EVERY COLUMN
       for (int col = 0; col < SCREEN_WIDTH-1; col+=SQUARELENGTH){
@@ -90,17 +108,24 @@ public class Main extends JPanel{
                 }
             } catch (Exception e){
               System.out.println("ERROR:\n"+SCREEN_HEIGHT+"\n"+SCREEN_WIDTH+"\n"+(row+row1)+"\n" + (col+col1) + "\n=======");
-              // System.out.println("Pranav likes men");
             }
           }
         }
-        average /= denominator;
-        int[] rgb = getActualRGB((int)average);
+
+        
+        rgb = getActualRGB((int)average);
+        int grays = (rgb[0] + rgb[1] + rgb[2])/3;
+        //This is in color ====== g.setColor(new Color(rgb[0],rgb[1],rgb[2]));
+        g.setColor(new Color(grays,grays,grays));
+        g.fillRect(col,row,1,1);
+        
+        /*
         if (rgb[0] >= 125 && rgb[1] >= 125 && rgb[2] >= 1) System.out.print(" ");
-        else {System.out.print("◼");}
+        else {System.out.print("#");}
         // System.out.println("Average NOW: " + average);
+        */
       }
-      System.out.println();
+      //System.out.println();
       
     }
   }
@@ -114,8 +139,8 @@ public class Main extends JPanel{
     frm.setSize(width,height);
     SCREEN_WIDTH = width;
     SCREEN_HEIGHT = height;
-    System.out.println(SCREEN_WIDTH);
-    System.out.println(SCREEN_HEIGHT);
+    //System.out.println(SCREEN_WIDTH);
+    //System.out.println(SCREEN_HEIGHT);
     ALL_PIXELS = (SCREEN_WIDTH*SCREEN_HEIGHT)/PIXEL_SIZE;
     
     
