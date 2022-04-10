@@ -9,20 +9,42 @@ import javax.swing.JPanel;
 //import javax.swing.SwingUtilities;
 import java.util.Scanner;
 
+import com.googlecode.javacv.cpp.opencv_core.IplImage;
+import com.googlecode.javacv.cpp.opencv_highgui.CvCapture;
+import static com.googlecode.javacv.cpp.opencv_highgui.*;
+
+
 
 public class Main extends JPanel{
   /////////////////Initializes variables needed to read the image//////////////////////////////
   BufferedImage img;
   static int width;
   static int height;
+  boolean image = false;
+  boolean video = false;
   Scanner sc = new Scanner(System.in);
   String url = sc.nextLine();
   public Main(){
+    if(url.substring(url.length()-3).equals("jpg")){
+      image = true;
+    }
+    else{
+      video = true;
+    }
     //setSize(5,5);
     setVisible(true);
     ///////////////Calls loadImage method with the image URL/////////////////////////////////
-    loadImage(url);
+    if(image == true){
+      loadImage(url);
+    }
+    else{
+      System.out.println("yes");
+      printVideo();
+    }
   }
+
+
+
 
   /////////////////Attempts to read the image from the attached files and gets its width and height/////////////////////////
   public void loadImage(String URL){
@@ -30,7 +52,7 @@ public class Main extends JPanel{
       img = ImageIO.read(Main.class.getResource(URL));
       width = img.getWidth();
       height = img.getHeight();
-      System.out.println("Read complete.");
+      System.out.println("Image Read complete.");
     }
     catch(IOException e){
       e.printStackTrace();
@@ -52,9 +74,11 @@ public class Main extends JPanel{
     //g.drawImage(img,0,0,width,height,this);
     //System.out.println("Print complete.");
     //draw(g,rgb,x,y);
-    printImage(g);
+    if(image == true){
+      printImage(g);
+    }  
     //draw(g,rgb,x,y);
-    System.out.println("Print complete.");
+    //System.out.println("Print complete.");
   }
 
   ////////////Initializes variables based on width and height of image/////////////////////////////////
@@ -95,6 +119,28 @@ public class Main extends JPanel{
     g.fillRect(x,y,1,1);
   }
   */
+  public void printVideo(){
+    width = CV_CAP_PROP_FRAME_WIDTH;
+    height = CV_CAP_PROP_FRAME_HEIGHT;
+    CvCapture capture = cvCreateFileCapture(url);
+    IplImage frame;
+    cvNamedWindow("Video",CV_WINDOW_AUTOSIZE);
+    for(;;){
+      frame = cvQueryFrame(capture);
+        if(frame == null){
+          System.out.println("ERROR: NO Video File");
+          break;
+        }
+      cvShowImage("Video",frame);
+      char c = (char) cvWaitKey(30);
+
+      if(c==27){
+        break;
+      }
+    }
+    cvReleaseCapture(capture);
+    cvDestroyWindow("Video");
+  }
 
   /////////////////Method that goes through every pixel (is able to get the average color is neccessary) and finds its color and prints out a sqaure based on the color///////////////////////////
   public void printImage(Graphics g){
@@ -128,6 +174,8 @@ public class Main extends JPanel{
         int grays = (rgb[0] + rgb[1] + rgb[2])/3;
         //This is in color ====== g.setColor(new Color(rgb[0],rgb[1],rgb[2]));
         g.setColor(new Color(grays,grays,grays));
+
+        /*
         if(grays>100){
           g.setColor(Color.WHITE);
           System.out.print(" ");
@@ -138,22 +186,26 @@ public class Main extends JPanel{
           System.out.print("■");
           
         }
+        */
         g.fillRect(col,row,1,1);
         
+
+
+
         /*
         if (rgb[0] >= 125 && rgb[1] >= 125 && rgb[2] >= 1) System.out.print(" ");
         else {System.out.print("#");}
         // System.out.println("Average NOW: " + average);
         */
       }
-      System.out.println();
+      //System.out.println();
       
     }
   }
 
   ////////////Main method that adds all componenets to JFrame and prints out image///////////////////
   public static void main(String[] args){
-    System.out.println("Image URL: ");
+    System.out.println("Image or Video URL: ");
     JFrame frm = new JFrame();
     frm.setVisible(true);
     frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
