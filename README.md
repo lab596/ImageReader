@@ -4,6 +4,8 @@ It is able to do a fully colored image (not initially intended) as well as a Gra
 
 ---
 
-Plans:
-To eventually be able to transfer a video in live time to the JFrame by drawing pixel by pixel
-Eventually from there recognize how facial regoinition workds and be able to recognize objects from a video
+# Plans:
+* To eventually be able to transfer a video in live time to the JFrame by drawing pixel by pixel.
+* Enable facial recognition based on the video displayed
+
+
