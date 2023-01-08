@@ -23,7 +23,7 @@ def find_key(image):
 
 
 def main(new_width = 300):
-    path = input("Enter and image path:\n")
+    path = input("Enter an image path:\n")
 
     try:
         image = PIL.Image.open(path)
